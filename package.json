@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.2",
+    "@fluentui/web-components": "^2.6.1",
+    "@inventage/leaflet-map": "^0.8.0",
+    "@microsoft/fast-foundation": "^2.49.6",
+    "@shoelace-style/shoelace": "^2.15.1",
+    "emoji-picker-element": "^1.21.3"
+  }
+}

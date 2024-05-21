@@ -1,0 +1,90 @@
+<%-- https://scalate.github.io/scalate/documentation/ssp-reference.html --%>
+
+#import (webcodegen.model.WebComponentsDef)
+
+<%@ val group: String %>
+<%@ val packagePrefix: String %>
+<%@ val element: WebComponentsDef.Element %>
+
+package ${packagePrefix}.${group}
+
+import outwatch._
+import org.scalajs.dom
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSImport
+
+// ${element.summary.linesIterator.mkString(" ")}
+// ${element.docUrl}
+object ${element.scalaName.capitalize} {
+
+    @JSImport("${element.importPath}", JSImport.Namespace)
+    @js.native
+    object JSImport${element.scalaName.capitalize} extends js.Object
+    val _ = JSImport${element.scalaName.capitalize}
+
+    // ${element.description.linesIterator.mkString(" ")}
+    val ${element.scalaName}: VNode = VNode.html("${element.tagName}")
+
+    #for (event <- element.events)
+    // ${event.description.linesIterator.mkString(" ")}
+    val on${event.scalaName.capitalize} = EmitterBuilder.fromEvent[${event.tpe.scalaType(element.scalaName.capitalize + "Event")}]("${event.domName}")
+    #end
+
+    #for (attribute <- element.attributes)
+    // ${attribute.description.linesIterator.mkString(" ")}
+    #if (attribute.tpe.scalaType("") == "Boolean")
+    val ${attribute.scalaName} = VMod.attr[${attribute.tpe.scalaType("String")}]("${attribute.attrName}", identity)
+    #else
+    val ${attribute.scalaName} = VMod.attr[${attribute.tpe.scalaType("String")}]("${attribute.attrName}")
+    #end
+    #end
+
+    #for (property <- element.allJsProperties if !property.isReflected && property.isReadonly && !property.isMethod)
+    // ${property.description.linesIterator.mkString(" ")}
+    val ${property.scalaName} = VMod.prop[${property.tpe.scalaType("js.Any")}]("${property.propName}")
+    #end
+
+    #for (cssProperty <- element.cssProperties)
+    // ${cssProperty.description.linesIterator.mkString(" ")}
+    val ${cssProperty.scalaName} = VMod.style[String]("${cssProperty.cssName}")
+    #end
+
+    #for (slot <- element.slots)
+    // ${slot.description.linesIterator.mkString(" ")}
+    val slot${slot.scalaName.capitalize}: VMod = BasicAttr("slot", "${slot.slotName}")
+    #end
+
+    #for (cssPart <- element.cssParts)
+    // ${cssPart.description.linesIterator.mkString(" ")}
+    def cssPart${cssPart.scalaName.capitalize}: String = "${cssPart.cssName}"
+    #end
+
+    @js.native
+    trait ${element.scalaName.capitalize}Element extends dom.Element {
+        #for (property <- element.allJsProperties)
+        // ${property.description.linesIterator.mkString(" ")}
+        ${if (property.isReadonly) "val" else "var"} ${property.scalaName}: ${if (property.isMethod) "js.Function" else property.tpe.scalaType("js.Any")} = js.native
+        #end
+    }
+
+    @js.native
+    trait ${element.scalaName.capitalize}Event extends dom.Event {
+        override def target: ${element.scalaName.capitalize}Element = js.native
+        // some custom-elements use CustomEvent with detail, but we do not have that info.
+        // So we always provide the untyped api here, but can be undefined.
+        def detail: js.Any = js.native
+    }
+
+    #for (event <- element.events)
+    #match (event.tpe)
+    #case (WebComponentsDef.Type.Struct(name, members))
+    @js.native
+    trait ${name} extends ${element.scalaName.capitalize}Event {
+        #for ((member, tpe) <- members)
+        def ${member}: ${tpe.scalaType("js.Any")} = js.native
+        #end
+    }
+    #otherwise
+    #end
+    #end
+}

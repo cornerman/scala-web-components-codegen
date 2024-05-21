@@ -1,0 +1,53 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "sbt@latest": {
+      "last_modified": "2024-03-22T11:26:23Z",
+      "resolved": "github:NixOS/nixpkgs/a3ed7406349a9335cb4c2a71369b697cecd9d351#sbt",
+      "source": "devbox-search",
+      "version": "1.9.9",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/clrwyandbc3ig6f3g6yrs36d8z5jb7lp-sbt-1.9.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/clrwyandbc3ig6f3g6yrs36d8z5jb7lp-sbt-1.9.9"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/c8pk0h3i5ddzw2fiz2qwrlqy4mm1nib1-sbt-1.9.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/c8pk0h3i5ddzw2fiz2qwrlqy4mm1nib1-sbt-1.9.9"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/p0nh7i03z5mp1l9pzjirc2zkd6c294vi-sbt-1.9.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/p0nh7i03z5mp1l9pzjirc2zkd6c294vi-sbt-1.9.9"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/zadhq90vpjaflmczlzz2828h08dfbl1z-sbt-1.9.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/zadhq90vpjaflmczlzz2828h08dfbl1z-sbt-1.9.9"
+        }
+      }
+    }
+  }
+}
