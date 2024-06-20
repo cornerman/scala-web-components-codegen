@@ -110,5 +110,11 @@ object WebComponentsDef {
       case Struct(scalaTypeName, _) => scalaTypeName
       case Scalar(scalaTypeName)    => scalaTypeName
     }
+
+    def isHtmlCompatible(tpe: Type): Boolean = tpe match {
+      case Null | Undefined | None | Unknown(_) | Scalar(_) => true
+      case Union(types)                                     => types.forall(isHtmlCompatible(_))
+      case Array(_) | Struct(_, _)                          => false
+    }
   }
 }

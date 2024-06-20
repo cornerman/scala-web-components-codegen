@@ -95,11 +95,7 @@ object WebComponentsTranslator {
   def attributes(elementDeclaration: M.Declaration): Vector[Def.Attribute] = {
     elementDeclaration.attributes.flatMap { attr =>
       val tpe = parseValueType(attr.`type`)
-      if (!isAttributeTypeHtmlCompatible(tpe)) {
-        // Attr contains HTML-incompatible types such as element, function, date, etc.
-        // So, we must use it as a property instead.
-        None
-      } else {
+      if (Def.Type.isHtmlCompatible(tpe)) {
         Some(
           Def.Attribute(
             attrName = attr.name,
@@ -108,6 +104,10 @@ object WebComponentsTranslator {
             description = attr.description.getOrElse(""),
           )
         )
+      } else {
+        // Attr contains HTML-incompatible types such as element, function, date, etc.
+        // So, we must use it as a property instead.
+        None
       }
     }
   }
