@@ -65,7 +65,7 @@ Templates can be configured by setting `webcodegenTemplates`.
 
 We are using [scalate](https://scalate.github.io/scalate/) for templates, so you can use anything that is supported there (e.g. `mustache` or `ssp`) - the converter will be picked according to the file extension of the provided template file. Check the [scalate user guide](https://scalate.github.io/scalate/documentation/user-guide.html) for more details.
 
-A template is called for each web-component found, and is passed an instance of [`webcodegen.WebComponent`](codegen/src/main/scala/webcodegen/WebComponent.scala) (variable name `component`) which contains all the extracted information.
+A template is called for each web-component found, and is passed an instance of [`webcodegen.WebComponent.Element`](codegen/src/main/scala/webcodegen/model/WebComponentsDef.scala) (variable name `element`) which contains all the extracted information.
 You can see the declaration in the first line of each `ssp` template.
 
-See [existing templates](codegen/src/main/resources/templates/) for details.
+See [existing templates](codegen/src/main/resources/provided-templates/) for details.
