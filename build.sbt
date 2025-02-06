@@ -40,6 +40,17 @@ lazy val codegen = project
 lazy val codegen212 = codegen("2.12.19")
 lazy val codegen213 = codegen("2.13.13")
 
+lazy val cli = project
+  .settings(
+    name               := "scala-web-components-codegen-cli",
+    scalaVersion       := "2.13.13",
+    crossScalaVersions := Seq("2.13.13"),
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %% "mainargs" % "0.7.1"
+    ),
+  )
+  .dependsOn(codegen213)
+
 lazy val pluginSbt = project
   .settings(
     name               := "sbt-web-components-codegen",
