@@ -17,7 +17,7 @@ Or you can chose an existing template that is included with the plugin (`webcode
 
 In `project/plugins.sbt`:
 ```sbt
-addSbtPlugin("com.github.cornerman" % "sbt-web-components-codegen" % "0.1.2")
+addSbtPlugin("com.github.cornerman" % "sbt-web-components-codegen" % "0.1.3")
 ```
 
 In `build.sbt`:
@@ -43,7 +43,7 @@ lazy val web = project
 In `build.sc`:
 ```scala
 import mill._, scalalib._
-import $ivy.`com.github.cornerman::mill-web-components-codegen:0.1.2`, webcodegen.plugin.WebComponentsCodegenModule
+import $ivy.`com.github.cornerman::mill-web-components-codegen:0.1.3`, webcodegen.plugin.WebComponentsCodegenModule
 
 object backend extends ScalaModule with WebComponentsCodegenModule {
   // The custom-element.json files to be processed
@@ -57,6 +57,13 @@ object backend extends ScalaModule with WebComponentsCodegenModule {
       webcodegen.Template.File(os.pwd / "file.mustache"),
   )
 }
+```
+
+### CLI
+
+Use coursier to launch the CLI for generating code:
+```bash
+cs launch com.github.cornerman:scala-web-components-codegen-cli_2.13:0.1.3 -- --custom-elements-name shoelace --custom-elements-json "node_modules/@shoelace-style/shoelace/dist/custom-elements.json" --out-dir generated-code --template-outwatch --scala-version "3.0.0"
 ```
 
 ## Template
