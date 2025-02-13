@@ -5,6 +5,7 @@
     "@inventage/leaflet-map": "^0.8.0",
     "@microsoft/fast-foundation": "^2.49.6",
     "@shoelace-style/shoelace": "^2.15.1",
+    "@ui5/webcomponents": "^2.7.2",
     "emoji-picker-element": "^1.21.3"
   }
 }
