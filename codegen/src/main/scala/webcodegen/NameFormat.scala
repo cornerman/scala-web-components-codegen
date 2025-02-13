@@ -7,8 +7,14 @@ object NameFormat {
     st.nme.keywords.map(_.toString)
   }
 
+  def joinScalaNames(head: String, tails: String*): String = {
+    val parts = head +: tails.map(_.replaceAll("`", "").capitalize)
+    val name  = parts.mkString("")
+    sanitizeScalaName(name)
+  }
+
   def sanitizeScalaName(rawName: String): String = {
-    val name              = rawName.trim
+    val name              = rawName.trim.replaceAll("`", "")
     def isValidIdentifier = name.matches("^[a-zA-Z_][a-zA-Z0-9_]*$")
     if (!scalaKeywords(name) && isValidIdentifier) name else s"`$name`"
   }

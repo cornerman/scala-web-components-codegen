@@ -1,6 +1,7 @@
 <%-- https://scalate.github.io/scalate/documentation/ssp-reference.html --%>
 
 #import (webcodegen.model.WebComponentsDef)
+#import (webcodegen.NameFormat.joinScalaNames)
 
 <%@ val group: String %>
 <%@ val packagePrefix: String %>
@@ -52,12 +53,12 @@ object ${element.scalaName.capitalize} {
 
     #for (slot <- element.slots)
     // ${slot.description.linesIterator.mkString(" ")}
-    val slot${slot.scalaName.capitalize}: VMod = BasicAttr("slot", "${slot.slotName}")
+    val ${joinScalaNames("slot", slot.scalaName)}: VMod = BasicAttr("slot", "${slot.slotName}")
     #end
 
     #for (cssPart <- element.cssParts)
     // ${cssPart.description.linesIterator.mkString(" ")}
-    def cssPart${cssPart.scalaName.capitalize}: String = "${cssPart.cssName}"
+    def ${joinScalaNames("cssPart", cssPart.scalaName)}: String = "${cssPart.cssName}"
     #end
 
     @js.native
