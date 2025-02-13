@@ -15,7 +15,7 @@ object WebComponentsTranslator {
         module.kind == "javascript-module",
         s"Unknown module type `${module.kind}` for module `${module.path}`.",
       )
-      module.declarations.map { declaration =>
+      module.declarations.flatMap { declaration =>
         require(
           declaration.kind == "class",
           s"Expected kind=class declaration in module `${module.path}`, got `${declaration.kind}` for declaration `${declaration.name}`.",
@@ -25,10 +25,11 @@ object WebComponentsTranslator {
           s"Expected customElement=true declaration in module `${module.path}` for declaration `${declaration.name}`.",
         )
 
+        declaration.tagName.map { tagName =>
         val props = allJsProperties(declaration)
         val attrs = attributes(declaration)
         Def.Element(
-          tagName = declaration.tagName,
+            tagName = tagName,
           name = declaration.name,
           importPath = customElements.jsImportPath(module.path),
           docUrl = declaration.documentation.filter(_.nonEmpty),
@@ -45,6 +46,7 @@ object WebComponentsTranslator {
           slots = slots(declaration),
         )
       }
+    }
     }
 
     WebComponentsDef(elements)

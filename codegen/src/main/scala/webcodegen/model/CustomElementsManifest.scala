@@ -27,7 +27,7 @@ object CustomElementsManifest {
     description: Option[String],
     summary: Option[String],
     tagNameWithoutPrefix: Option[String], // e.g. "animated-image"
-    tagName: String,                      // e.g. "sl-animated-image"
+    tagName: Option[String],              // e.g. "sl-animated-image"
     customElement: Boolean,
     superclass: Superclass,
     jsDoc: Option[String],
