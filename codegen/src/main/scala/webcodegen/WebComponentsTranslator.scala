@@ -110,7 +110,7 @@ object WebComponentsTranslator {
     elementDeclaration.cssParts.map { part =>
       Def.CssPart(
         description = part.description.getOrElse(""),
-        cssName = part.name,
+        cssName = sanitizeCssName(part.name),
       )
     }
   }
@@ -119,7 +119,7 @@ object WebComponentsTranslator {
     elementDeclaration.cssProperties.map { prop =>
       Def.CssProperty(
         description = prop.description.getOrElse(""),
-        cssName = prop.name,
+        cssName = sanitizeCssName(prop.name),
       )
     }
   }
@@ -134,6 +134,10 @@ object WebComponentsTranslator {
   }
 
   // -- util helpers
+
+  def sanitizeCssName(rawName: String): String = {
+    rawName.replace("\\", "")
+  }
 
   private val singleQuotedPattern: Regex = """^'([^']*)'$""".r
   private val objectBodyPattern: Regex   = """^\{(.*)\}$""".r
