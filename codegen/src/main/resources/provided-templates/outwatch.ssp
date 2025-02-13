@@ -31,10 +31,11 @@ object ${element.scalaName.capitalize} {
     #end
 
     #for (attribute <- element.attributes)
-    // ${attribute.description.linesIterator.mkString(" ")}
     #if (attribute.tpe.scalaType("") == "Boolean")
+    // ${attribute.description.linesIterator.mkString(" ")}
     val ${attribute.scalaName} = VMod.attr[${attribute.tpe.scalaType("String")}]("${attribute.attrName}", identity)
     #else
+    // ${attribute.description.linesIterator.mkString(" ")}
     val ${attribute.scalaName} = VMod.attr[${attribute.tpe.scalaType("String")}]("${attribute.attrName}")
     #end
     #end
