@@ -26,27 +26,27 @@ object WebComponentsTranslator {
         )
 
         declaration.tagName.map { tagName =>
-        val props = allJsProperties(declaration)
-        val attrs = attributes(declaration)
-        Def.Element(
+          val props = allJsProperties(declaration)
+          val attrs = attributes(declaration)
+          Def.Element(
             tagName = tagName,
-          name = declaration.name,
-          importPath = customElements.jsImportPath(module.path),
-          docUrl = declaration.documentation.filter(_.nonEmpty),
-          description = (declaration.description.toVector ++ declaration.jsDoc
-            .map(_.replaceAll("/\\*\\*|\\*/", "").replaceAll("\n \\* ?", "\n").trim)
-            .toVector)
-            .mkString("\n"),
-          summary = declaration.summary.getOrElse(""),
-          events = events(declaration),
-          allJsProperties = props,
-          attributes = attrs,
-          cssProperties = cssProperties(declaration),
-          cssParts = cssParts(declaration),
-          slots = slots(declaration),
-        )
+            name = declaration.name,
+            importPath = customElements.jsImportPath(module.path),
+            docUrl = declaration.documentation.filter(_.nonEmpty),
+            description = (declaration.description.toVector ++ declaration.jsDoc
+              .map(_.replaceAll("/\\*\\*|\\*/", "").replaceAll("\n \\* ?", "\n").trim)
+              .toVector)
+              .mkString("\n"),
+            summary = declaration.summary.getOrElse(""),
+            events = events(declaration),
+            allJsProperties = props,
+            attributes = attrs,
+            cssProperties = cssProperties(declaration),
+            cssParts = cssParts(declaration),
+            slots = slots(declaration),
+          )
+        }
       }
-    }
     }
 
     WebComponentsDef(elements)
@@ -95,28 +95,15 @@ object WebComponentsTranslator {
   }
 
   def attributes(elementDeclaration: M.Declaration): Vector[Def.Attribute] = {
-    elementDeclaration.attributes.flatMap { attr =>
+    elementDeclaration.attributes.map { attr =>
       val tpe = parseValueType(attr.`type`)
-      if (Def.Type.isHtmlCompatible(tpe)) {
-        Some(
-          Def.Attribute(
-            attrName = attr.name,
-            tpe = tpe,
-            default = attr.default.filter(_.nonEmpty),
-            description = attr.description.getOrElse(""),
-          )
-        )
-      } else {
-        // Attr contains HTML-incompatible types such as element, function, date, etc.
-        // So, we must use it as a property instead.
-        None
-      }
+      Def.Attribute(
+        attrName = attr.name,
+        tpe = Def.Type.asHtmlCompatible(tpe),
+        default = attr.default.filter(_.nonEmpty),
+        description = attr.description.getOrElse(""),
+      )
     }
-  }
-
-  def isAttributeTypeHtmlCompatible(tpe: Def.Type): Boolean = tpe match {
-    case Def.Type.Scalar(_) => true
-    case _                  => false
   }
 
   def cssParts(elementDeclaration: M.Declaration): Vector[Def.CssPart] = {

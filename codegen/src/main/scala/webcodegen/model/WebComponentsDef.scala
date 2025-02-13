@@ -111,10 +111,9 @@ object WebComponentsDef {
       case Scalar(scalaTypeName)    => scalaTypeName
     }
 
-    def isHtmlCompatible(tpe: Type): Boolean = tpe match {
-      case Null | Undefined | None | Unknown(_) | Scalar(_) => true
-      case Union(types)                                     => types.forall(isHtmlCompatible(_))
-      case Array(_) | Struct(_, _)                          => false
+    def asHtmlCompatible(tpe: Type): Type = tpe match {
+      case Scalar("Boolean") => tpe
+      case _                 => Scalar("String")
     }
   }
 }
